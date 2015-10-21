@@ -1,0 +1,10 @@
+args==0.1.0
+click==4.1
+clint==0.4.1
+jdcal==1.0
+openpyxl==2.2.5
+py2exe==0.9.2.2
+pyserial==2.7
+PyVISA==1.7
+simplejson==3.8.0
+wheel==0.24.0

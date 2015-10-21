@@ -1,0 +1,17 @@
+#Instructions
+
+1. execute the batch file named "run.bat" by double clicking on it
+
+2. Enter the correct data into the prompts
+
+3. Results will be generated in the \Results folder with an appropriate name
+
+4. Respond with Yes if you would like to test another board
+
+##Notes:
+
+Make sure you close the current spreadsheet while the test is running.
+If you have the file open and the script running the file will be saved as
+ai_drift_permission_error.xlsx in the root folder:w
+
+ctrl-c cancels a running cmd program
