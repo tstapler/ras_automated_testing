@@ -196,12 +196,12 @@ def main(software_version="1 70h", board_serial = "w38334x0012AK1432180",
                     powersupply.write('APPLy ' + str(voltage))
 		    #The initial soak value for the first voltage in each range
                     if first:
-                        sleep(test_params['inital_soak'])
+                        sleep(int(test_params['initial_soak']))
                         first = False
 		    #The intermediate wait between voltages
                     else:
-                        sleep(test_params['intermediate_soak'])
-                    ADval, EUval = take_reading(fb107, minimum=test_params['minimum_wait'], maximum=test_params['maximum_wait'])
+                        sleep(int(test_params['intermediate_soak']))
+                    ADval, EUval = take_reading(fb107, minimum=int(test_params['minimum_wait']),maximum=int(test_params['maximum_wait']))
                     for row in sheet.iter_rows('A' + str(row_on_sheet) + ':' + 'E' + str(row_on_sheet)):
                         for cell, data in zip(row, [decimal, voltage, EUval, ADval, ADval - curr_calib_point]):
                             cell.value = data
@@ -228,19 +228,28 @@ def main(software_version="1 70h", board_serial = "w38334x0012AK1432180",
 @click.option('-s', prompt="Serial Number", default=defaults['serial'], help='Serial number of the board being tested (Numbers after W38334x0012)')
 @click.option('-ai', prompt="Input being tested (AI1/AI2)", default=defaults['input'], help="Which AI is being tested")
 @click.option('-t', prompt="Temperature", default=defaults['temperature'], help="Current temperature in degrees celsius")
-@click.option('--in_logical', prompt="AI Logical (On Slot 0 CPU (AI1=8, AI2=9) or 6PT Slot 3 (AI1=32, AI2=33)", default=defaults['ai_logical'], help="The logical of the AI")
-@click.option('--out_logical', prompt="AO Logical (On ROC312)", default=defaults['ao_logical'], help="The logical of the AO")
-@click.option('--com_port_107', prompt="FB107 COM Port", default=defaults['com_port_107'])
-@click.option('--com_port_312', prompt="ROC312 COM Port", default=defaults['com_port_312'])
-def cli(v, board_type, s, ai, t, in_logical, out_logical, com_port_107, com_port_312):
+@click.option('--com_port_312', prompt="ROC312 COM Port", default=)
+def cli(v, board_type, s, ai, t, com_port_107, com_port_312):
     if board_type == "6PT":
         b_type = "W38334x0012"
     else:
         b_type = "W48084x0012"
 
+    if board_type is "CPU":
+	if board_type is "AI1":
+		in_logical = 8
+	else:
+		in_logical = 9
+    elif board_type is "6PT":
+	if board_type is "AI1":
+		in_logical = 32
+	else:
+		in_logical = 33
+    else:
+	print("Invalid Board type or Input")
+
     main(software_version=v, board_serial=b_type + s, ai=ai, temperature=t,
-            ai_in_logical=in_logical, ai_out_logical=out_logical, fb_com_port=com_port_107,
-            roc_com_port=com_port_312)
+            ai_in_logical=in_logical, ai_out_logical=defaults['ao_logical'], fb_com_port=defaults['com_port_107'], roc_com_port=defaults['com_port_312'])
 
     again = click.prompt("Would you like to run another test?", type=bool)
 
