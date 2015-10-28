@@ -60,6 +60,7 @@ def calibrate(rtu, input_rtu, powersupply, voltage=20):
     input_rtu.read_response()
     #Take current reading
 
+    sleep(int(test_params['calibrate_soak']))
     ADreading, EUreading = take_reading(rtu,maximum=30)
     zero_point = ADreading
     #Convert the readings into a uint16 represented by a list of 4 integers
@@ -72,6 +73,7 @@ def calibrate(rtu, input_rtu, powersupply, voltage=20):
     #Set input to 20mA
     input_rtu.send_opcode(181,opcode = lib.opcode(181,data=[1,4,ai_output_logical,6] + miliamps[2][1]))
     input_rtu.read_response()
+    sleep(int(test_params['calibrate_soak']))
     #Take current reading
     ADreading, EUreading = take_reading(rtu,maximum=30)
     hundred_point = ADreading
@@ -86,6 +88,7 @@ def calibrate(rtu, input_rtu, powersupply, voltage=20):
     #Set input to 12mA
     input_rtu.send_opcode(181,opcode = lib.opcode(181,data=[1,4,ai_output_logical,6] + miliamps[1][1]))
     input_rtu.read_response()
+    sleep(int(test_params['calibrate_soak']))
     #Take current reading
     ADreading, EUreading = take_reading(rtu,maximum=30)
     fifty_point = ADreading
@@ -228,25 +231,24 @@ def main(software_version="1 70h", board_serial = "w38334x0012AK1432180",
 @click.option('-s', prompt="Serial Number", default=defaults['serial'], help='Serial number of the board being tested (Numbers after W38334x0012)')
 @click.option('-ai', prompt="Input being tested (AI1/AI2)", default=defaults['input'], help="Which AI is being tested")
 @click.option('-t', prompt="Temperature", default=defaults['temperature'], help="Current temperature in degrees celsius")
-@click.option('--com_port_312', prompt="ROC312 COM Port", default=)
-def cli(v, board_type, s, ai, t, com_port_107, com_port_312):
+def cli(v, board_type, s, ai, t):
     if board_type == "6PT":
         b_type = "W38334x0012"
     else:
         b_type = "W48084x0012"
 
-    if board_type is "CPU":
-	if board_type is "AI1":
-		in_logical = 8
-	else:
-		in_logical = 9
-    elif board_type is "6PT":
-	if board_type is "AI1":
-		in_logical = 32
-	else:
-		in_logical = 33
+    if board_type == "CPU":
+        if board_type == "AI1":
+            in_logical = 8
+        else:
+            in_logical = 9
+    elif board_type == "6PT":
+        if board_type == "AI1":
+            in_logical = 32
+        else:
+            in_logical = 33
     else:
-	print("Invalid Board type or Input")
+        print("Invalid Board type or Input")
 
     main(software_version=v, board_serial=b_type + s, ai=ai, temperature=t,
             ai_in_logical=in_logical, ai_out_logical=defaults['ao_logical'], fb_com_port=defaults['com_port_107'], roc_com_port=defaults['com_port_312'])
