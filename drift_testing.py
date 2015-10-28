@@ -241,15 +241,6 @@ def cli(v, board_type, s, ai, t, com_port_107, com_port_312):
     else:
         b_type = "W48084x0012"
 
-<<<<<<< HEAD
-    if board_type == "CPU":
-        if board_type == "AI1":
-            in_logical = 8
-        else:
-            in_logical = 9
-    elif board_type == "6PT":
-        if board_type == "AI1":
-=======
     if board_type is "CPU":
         if ai is "AI1":
             in_logical = 8
@@ -257,7 +248,6 @@ def cli(v, board_type, s, ai, t, com_port_107, com_port_312):
             in_logical = 9
     elif board_type is "6PT":
         if ai is "AI1":
->>>>>>> 3f487024b8f68095b2f8def9db9c376e07f6f900
             in_logical = 32
         else:
             in_logical = 33
