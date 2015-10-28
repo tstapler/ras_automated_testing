@@ -231,11 +231,7 @@ def main(software_version="1 70h", board_serial = "w38334x0012AK1432180",
 @click.option('-s', prompt="Serial Number", default=defaults['serial'], help='Serial number of the board being tested (Numbers after W38334x0012)')
 @click.option('-ai', prompt="Input being tested (AI1/AI2)", default=defaults['input'], help="Which AI is being tested")
 @click.option('-t', prompt="Temperature", default=defaults['temperature'], help="Current temperature in degrees celsius")
-<<<<<<< HEAD
 def cli(v, board_type, s, ai, t):
-=======
-def cli(v, board_type, s, ai, t, com_port_107, com_port_312):
->>>>>>> 3f487024b8f68095b2f8def9db9c376e07f6f900
     if board_type == "6PT":
         b_type = "W38334x0012"
     else:
